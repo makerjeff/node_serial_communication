@@ -2,35 +2,34 @@
 //Simple Serial Broadcaster
 
 const int ledPin = 13;
-int ledState = LOW;
-unsigned long previousMillis = 0;
-const long interval = 250;
+int analogValue = 0;
+int brightness = 0;
+
 
 void setup() {
   pinMode(ledPin, OUTPUT);
-  
+  Serial.begin(9600);  //pour a bowl of serial
+  Serial.println("initialized!");
+  Serial.flush();
+
 }
 
 void loop() {
-  NoDelayBlink();
+  RandomSerial();
+  delay(1000);
 }
 
-//CUSTOM FUNCTIONS
-void NoDelayBlink() {
+void RandomSerial() {
+  int rand0 = random(0, 255);
+  int rand1 = random(0, 255);
+  int rand2 = random(0, 255);
   
-  unsigned long currentMillis = millis();
-  
-  if(currentMillis - previousMillis >= interval) {
-    //save the last led blink time
-    previousMillis = currentMillis;
-    
-    //switch the led state
-    if (ledState == LOW) {
-      ledState = HIGH;
-    }
-    else {
-      ledState = LOW;
-    }
-    digitalWrite(ledPin, ledState);
-  }
+  Serial.print(rand0);
+  Serial.print(", ");
+  Serial.print(rand1);
+  Serial.print(", ");
+  Serial.print(rand2);
+  Serial.print("\r\n");
+
 }
+
