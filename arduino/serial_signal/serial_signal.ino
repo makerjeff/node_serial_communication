@@ -1,21 +1,25 @@
-/*================================
-  = Simple Serial Generator v0.2 =
-  ================================
+/*=================================
+  = Simple Serial Generator v0.21 =
+  =================================
   Generate a simple serial using a X,Y,Z protocol.
   
   Updates:
+  2015.DEC.15: v0.21
+    - adding iterator count on printout
   2015.DEC.14: v0.2
     - upgraded to non-blocking 
   2015.DEC.14: v0.1
     - making this file an official v0.1
     - fully functional 3-value random serial output
-  
 */
 
 const int ledPin = 13;  //debug LED pin
 const long interval = 1000;  //how often to update (in milliseconds)
 unsigned long previousMillis = 0;  //initialize previous millis
 int inByte = 0;
+
+//iterator vars
+unsigned long iteration = 0;  //keeps track of # of pulses
 
 
 void setup() {
@@ -27,6 +31,8 @@ void setup() {
 }
 
 void loop() {
+  
+  //INPUT:
   //read serial if there's something in the input buffer
   if(Serial.available() > 0) {
     int ex = Serial.parseInt();  //parse first value
@@ -44,6 +50,9 @@ void loop() {
       Serial.print("\r\n");
     }
   }
+  
+  //OUTPUT:
+  
   //============================
   // non blocking delay pattern
   //============================
@@ -51,6 +60,7 @@ void loop() {
   if(currentMillis - previousMillis >= interval) {
     //-- PUT YOUR FUNCTION HERE --
     RandomSerial();
+    //-- PUT YOUR FUNCTION HERE <end> --
     previousMillis = currentMillis;  //checkpoint
   }
   //============================
@@ -61,12 +71,15 @@ void RandomSerial() {
   int rand1 = random(0, 255);
   int rand2 = random(0, 255);
   
+  Serial.print(iteration);  //print the iteration number
+  Serial.print(", ");
   Serial.print(rand0);
   Serial.print(", ");
   Serial.print(rand1);
   Serial.print(", ");
   Serial.print(rand2);
   Serial.print("\r\n");
-
+  
+  iteration ++;  //
 }
 
