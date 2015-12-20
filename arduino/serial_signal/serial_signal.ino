@@ -1,9 +1,11 @@
 /*=================================
-  = Simple Serial Generator v0.21 =
+  = Simple Serial Generator v0.22 =
   =================================
   Generate a simple serial using a X,Y,Z protocol.
   
   Updates:
+  2015.DEC.19: v0.22
+    - making leo-micro compliant
   2015.DEC.15: v0.21
     - adding iterator count on printout
   2015.DEC.14: v0.2
@@ -25,6 +27,10 @@ unsigned long iteration = 0;  //keeps track of # of pulses
 void setup() {
   pinMode(ledPin, OUTPUT);
   Serial.begin(9600);  //pour a bowl of serial
+
+  //leonardo + micro prereq
+  while(!Serial) {;}
+  
   Serial.println("initialized!");  //print a recognizable string
   Serial.flush();  //clear out the outgoing buffer
 
@@ -35,6 +41,7 @@ void loop() {
   //INPUT:
   //read serial if there's something in the input buffer
   if(Serial.available() > 0) {
+
     int ex = Serial.parseInt();  //parse first value
     int why = Serial.parseInt();  //parse second value
     int zee = Serial.parseInt();  //parse third value
